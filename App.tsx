@@ -5,8 +5,6 @@ import {
   Skia,
   SkImage,
 } from "@shopify/react-native-skia";
-import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { runOnUI, useSharedValue } from "react-native-reanimated";
 
@@ -24,32 +22,14 @@ export default function App() {
         return;
       }
       const canvas = surface.getCanvas();
-      const colors = [
-        Skia.Color("red"),
-        Skia.Color("green"),
-        Skia.Color("blue"),
-        Skia.Color("yellow"),
-        Skia.Color("purple"),
-        Skia.Color("orange"),
-        Skia.Color("pink"),
-        Skia.Color("cyan"),
-      ];
+      const color = Skia.Color("white");
       const render = () => {
         if (!isRunning.value) {
           return;
         }
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const paint = Skia.Paint();
-        paint.setColor(color);
-        paint.setStyle(PaintStyle.Fill);
-        canvas.drawRect(Skia.XYWHRect(0, 0, SIZE, SIZE), paint);
+        canvas.clear(color);
         surface.flush();
-        const snapshot = surface.makeImageSnapshot({
-          x: 0,
-          y: 0,
-          width: SIZE,
-          height: SIZE,
-        });
+        const snapshot = surface.makeImageSnapshot();
         const prevTexture = texture.value;
         texture.value = snapshot;
         prevTexture?.dispose();
